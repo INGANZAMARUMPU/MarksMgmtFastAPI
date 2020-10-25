@@ -4,14 +4,14 @@ from pydantic import BaseModel
 
 from tortoise.contrib.fastapi import register_tortoise
 
-from models import *
+from views import section
 
 app = FastAPI()
 
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+app.include_router(
+    section.router,
+    prefix="/section",
+)
 
 register_tortoise(
 	app,
