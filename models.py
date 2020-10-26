@@ -1,9 +1,14 @@
-from tortoise import fields, models
+from tortoise import Tortoise, fields, models
 from tortoise.contrib.pydantic import pydantic_model_creator
+
+Tortoise.init_models(["main"], "models")
 
 class Section(models.Model):
     id = fields.IntField(pk=True)
     name = fields.CharField(max_length=50, null=True)
+
+    def __str__(self):
+    	return name
 
 PydanticSection = pydantic_model_creator(Section, name='Section')
 PydanticSectionIn = pydantic_model_creator(Section, name='SectionIn', exclude_readonly=True)
@@ -13,20 +18,33 @@ class Level(models.Model):
     name = fields.CharField(max_length=50, null=True)
     level = fields.IntField(null=True)
 
+    def __str__(self):
+    	return name
+
 PydanticLevel = pydantic_model_creator(Level, name='Level')
 PydanticLevelIn = pydantic_model_creator(Level, name='LevelIn', exclude_readonly=True)
 
+class AnneScolaire(models.Model):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=50, null=True)
+
+    def __str__(self):
+    	return name
+
+PydanticAS = pydantic_model_creator(AnneScolaire, name='AnneScolaire')
+PydanticASIn = pydantic_model_creator(AnneScolaire, name='AnneScolaireIn', exclude_readonly=True)
+
 class Class(models.Model):
     id = fields.IntField(pk=True)
-    level = fields.ForeignKeyField('models.Level', null=False, blank=False)
-    section = fields.ForeignKeyField('models.Section', null=False, blank=False)
-    anneescolaire = fields.CharField(max_length=10, blank=False)
+    level:fields.ForeignKeyRelation[Level] = \
+    	fields.ForeignKeyField('models.Level', null=False, blank=False)
+    section:fields.ForeignKeyRelation[Section] = \
+    	fields.ForeignKeyField('models.Section', null=False, blank=False)
+    a_s:fields.ForeignKeyRelation[Section] = \
+    	fields.ForeignKeyField('models.AnneScolaire', null=False, blank=False)
 
     def __str__(self) -> str:
         return f"{self.level.name} {self.section.name}"
-
-    class PydanticMeta:
-        computed = ["__str__"]
 
 PydanticClass = pydantic_model_creator(Class, name='Class')
 PydanticClassIn = pydantic_model_creator(Class, name='ClassIn', exclude_readonly=True)
