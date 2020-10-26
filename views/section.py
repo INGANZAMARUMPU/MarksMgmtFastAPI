@@ -1,6 +1,10 @@
 from typing import List, Dict
 from fastapi import APIRouter, HTTPException
-from models import Section, PydanticSection, PydanticSectionIn
+from tortoise.contrib.pydantic import pydantic_model_creator
+from models import Section
+
+PydanticSection = pydantic_model_creator(Section, name='Section')
+PydanticSectionIn = pydantic_model_creator(Section, name='SectionIn', exclude_readonly=True)
 
 router = APIRouter()
 

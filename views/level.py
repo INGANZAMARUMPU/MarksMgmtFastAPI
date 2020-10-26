@@ -1,6 +1,10 @@
 from typing import List, Dict
 from fastapi import APIRouter, HTTPException
-from models import Level, PydanticLevel, PydanticLevelIn
+from tortoise.contrib.pydantic import pydantic_model_creator
+from models import Level
+
+PydanticLevel = pydantic_model_creator(Level, name='Level')
+PydanticLevelIn = pydantic_model_creator(Level, name='LevelIn', exclude_readonly=True)
 
 router = APIRouter()
 
