@@ -1,7 +1,6 @@
 from tortoise import Tortoise, fields, models
 from tortoise.contrib.pydantic import pydantic_model_creator
-
-Tortoise.init_models(["main"], "models")
+from pydantic import BaseModel
 
 class Section(models.Model):
     id = fields.IntField(pk=True)
@@ -36,18 +35,25 @@ PydanticASIn = pydantic_model_creator(AnneScolaire, name='AnneScolaireIn', exclu
 
 class Class(models.Model):
     id = fields.IntField(pk=True)
-    level:fields.ForeignKeyRelation[Level] = \
-    	fields.ForeignKeyField('models.Level', null=False, blank=False)
-    section:fields.ForeignKeyRelation[Section] = \
-    	fields.ForeignKeyField('models.Section', null=False, blank=False)
-    a_s:fields.ForeignKeyRelation[Section] = \
-    	fields.ForeignKeyField('models.AnneScolaire', null=False, blank=False)
+    level = fields.ForeignKeyField('models.Level', null=False, blank=False)
+    section = fields.ForeignKeyField('models.Section', null=False, blank=False)
+    a_s = fields.ForeignKeyField('models.AnneScolaire', null=False, blank=False)
+
+    def level_name(self) -> str:
+    	return "{self.level.name}"
+
+    def section_name(self) -> str:
+    	return "{self.section.name}"
+
+    def a_s_name(self) -> str:
+    	return "{self.a_s.name}"
 
     def __str__(self) -> str:
-        return f"{self.level.name} {self.section.name}"
+        return "{self.level.name} {self.section.name}"
 
-PydanticClass = pydantic_model_creator(Class, name='Class')
-PydanticClassIn = pydantic_model_creator(Class, name='ClassIn', exclude_readonly=True)
+    class PydanticMeta:
+        computed = ["level_name", "section_name", "a_s_name"]
+        exclude = ["password_hash"]
 
 class Student(models.Model):
     id = fields.IntField(pk=True)
