@@ -31,16 +31,16 @@ class Class(models.Model):
     a_s = fields.ForeignKeyField('models.AnneScolaire', null=False, blank=False)
 
     def level_name(self) -> str:
-    	return "{self.level.name}"
+    	return f"{self.level.name}"
 
     def section_name(self) -> str:
-    	return "{self.section.name}"
+    	return f"{self.section.name}"
 
     def a_s_name(self) -> str:
-    	return "{self.a_s.name}"
+    	return f"{self.a_s.name}"
 
     def __str__(self) -> str:
-        return "{self.level.name} {self.section.name}"
+        return f"{self.level.name} {self.section.name}"
 
     class PydanticMeta:
         computed = ["level_name", "section_name", "a_s_name"]
@@ -55,7 +55,7 @@ class Student(models.Model):
         return f"{self.first_name} {self.last_name}"
 
     def classe_name(self) -> str:
-    	return "{self.classe.name}"
+    	return f"{self.classe.name}"
 
     class PydanticMeta:
         computed = ["fullName", "classe_name"]

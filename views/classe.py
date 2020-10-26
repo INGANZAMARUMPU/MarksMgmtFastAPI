@@ -26,7 +26,8 @@ router = APIRouter()
 
 @router.get("/", response_model=List[ClassBaseOut])
 async def read():
-	return await ClassBaseOut.from_queryset(Class.all())
+    classes = Class.all().select_related("level","section","a_s")
+    return await ClassBaseOut.from_queryset(classes)
 
 @router.get("/{id}", response_model=ClassBaseOut)
 async def get(id:int):
