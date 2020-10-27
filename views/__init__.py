@@ -6,5 +6,6 @@ from . import (
 	student,
 	cours,
 	work,
-	user
+	user,
+	authentication
 )

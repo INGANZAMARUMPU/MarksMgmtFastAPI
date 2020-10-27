@@ -30,6 +30,7 @@ app.include_router(student.router, prefix="/student")
 app.include_router(cours.router, prefix="/cours")
 app.include_router(work.router, prefix="/work")
 app.include_router(user.router, prefix="/user")
+app.include_router(authentication.router, prefix="/authentication")
 
 register_tortoise(
 	app,
