@@ -3,8 +3,8 @@ from fastapi import APIRouter, HTTPException, Depends
 from tortoise.contrib.pydantic import pydantic_model_creator
 from fastapi.security import OAuth2PasswordBearer
 
-from models import Class
-# from authentication import
+from models import Class, User
+from .authentication import get_current_user
 
 PydanticClass = pydantic_model_creator(Class, name='Class')
 PydanticClassIn = pydantic_model_creator(Class, name='ClassIn', exclude_readonly=True)
@@ -29,7 +29,7 @@ class ClassBaseOut(PydanticClass):
         orm_mode = True
 
 @router.get("/", response_model=List[ClassBaseOut])
-async def read(token: str = Depends(oauth2_scheme)):
+async def read(current_user: User = Depends(get_current_user)):
     classes = Class.all().select_related("level","section","a_s")
     return await ClassBaseOut.from_queryset(classes)
 
