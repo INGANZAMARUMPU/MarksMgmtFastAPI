@@ -87,6 +87,3 @@ class User(models.Model):
     class PydanticMeta:
         computed = ["full_name"]
         exclude = ["password_hash"]
-
-PydanticUser = pydantic_model_creator(User, name='User')
-PydanticUserIn = pydantic_model_creator(User, name='UserIn', exclude_readonly=True)

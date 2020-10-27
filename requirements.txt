@@ -1,0 +1,12 @@
+aerich==0.3.2
+aiosqlite==0.15.0
+click==7.1.2
+fastapi==0.61.1
+h11==0.11.0
+iso8601==0.1.13
+pydantic==1.7
+PyPika==0.42.1
+starlette==0.13.6
+tortoise-orm==0.16.17
+typing-extensions==3.7.4.3
+uvicorn==0.12.2
