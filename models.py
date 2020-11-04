@@ -29,6 +29,8 @@ class Class(models.Model):
     level = fields.ForeignKeyField('models.Level', null=False, blank=False)
     section = fields.ForeignKeyField('models.Section', null=False, blank=False)
     a_s = fields.ForeignKeyField('models.AnneScolaire', null=False, blank=False)
+    fin_inscription = fields.DateField(null=False, blank=False)
+    cloturee = fields.BooleanField(null=False, default=False)
 
     def level_name(self) -> str:
     	return f"{self.level.name}"

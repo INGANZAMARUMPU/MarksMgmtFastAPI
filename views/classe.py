@@ -37,10 +37,11 @@ async def read(current_user: User = Depends(getTokenUser)):
 async def get(id:int):
 	return await ClassBaseOut.from_queryset_single(Class.get(id=id))
 
-@router.post("/", response_model=ClassBaseOut)
+@router.post("/", response_model=ClassBaseIn)
 async def create(classe:ClassBaseIn):
-	new_classe = await Class.create(**classe.dict(exclude_unset=True))
-	return new_classe
+    new_classe = await Class.create(**classe.dict(exclude_unset=True))
+    # classe = await Class.get(id=new_classe.id).select_related("level","section","a_s")
+    return new_classe
 
 @router.put("/{id}", response_model=ClassBaseOut)
 async def put(id:int, classe:ClassBaseIn):
